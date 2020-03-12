@@ -37,7 +37,8 @@ export class AppComponent {
         );
 
         if (event.previousContainer.exited) {
-          event.item.disabled=true
+           event.item.disabled=true
+          
           
          } 
         }else {
@@ -54,7 +55,7 @@ export class AppComponent {
                     var unique = this.done.filter(onlyUnique);
                     this.done = unique
                      console.log(this.done)
-                      event.container.data.splice(1,1,event.item.toString())
+                    //  event.container.data.splice(1,1,event.item.toString())
                       if(event.item.disabled===true){
                        event.item.disabled=false;
                        console.log(event.item.disabled+ "will Do that if asked"); 
