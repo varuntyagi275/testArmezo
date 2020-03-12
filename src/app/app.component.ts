@@ -12,8 +12,7 @@ export class AppComponent {
   todo = [];
   done = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   review = [];
-  showPlaceholder: "add Item Here";
-  draggedOut:boolean;
+ 
 countOfDropContainer:number=0;
    drop(event: CdkDragDrop<string[]>) {
     if(event.container.id==="donelist"){
@@ -26,19 +25,38 @@ countOfDropContainer:number=0;
     if (event.previousContainer === event.container) {
       moveItemInArray(this.done, event.previousIndex, event.currentIndex);
     } else {
+      if(event.previousContainer.id==="donelist"){
+        copyArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        );
+      } else{
+
+        transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+         // this.done.splice(1,1,event.item.data);
+
+          function onlyUnique(value, index, self) { 
+            return self.indexOf(value) === index;
+        }
+
+        var unique = this.done.filter( onlyUnique );
+        console.log(unique)
+        // var elemnt= this.done.indexOf(event.item.data);
+        // if(~elemnt)
+        // {
+        //   this.doneList[elemnt]=event.item.data;
+        // }
+      }
          
-      copyArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      
       if(event.previousContainer=== event.container){
             console.log("container is same. dont disable the item")      
           }else {
             if(event.previousContainer.exited){
                 event.item.disabled=true;
-                this.draggedOut=true;
+               
             }
           }
 
