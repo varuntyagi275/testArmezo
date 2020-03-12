@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDragExit, CdkDragEnter } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDrag, CdkDragExit, CdkDragEnter, copyArrayItem } from '@angular/cdk/drag-drop';
 import {ViewChild, ElementRef} from '@angular/core';
-import { read } from 'fs';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,7 +13,7 @@ export class AppComponent {
   done = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   review = [];
   showPlaceholder: "add Item Here";
-
+  draggedOut:boolean;
 countOfDropContainer:number=0;
    drop(event: CdkDragDrop<string[]>) {
     if(event.container.id==="donelist"){
@@ -24,16 +24,28 @@ countOfDropContainer:number=0;
     }
 
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.done, event.previousIndex, event.currentIndex);
     } else {
          
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+      copyArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+      if(event.previousContainer=== event.container){
+            console.log("container is same. dont disable the item")      
+          }else {
+            if(event.previousContainer.exited){
+                event.item.disabled=true;
+                this.draggedOut=true;
+            }
+          }
+
                        
     }
-  
+        console.log(event.previousContainer.data);
+        console.log(event.container.data);
       }
 
       entered(event: CdkDragEnter<string[]>) {
